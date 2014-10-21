@@ -1,4 +1,1 @@
-stat705
-=======
-
-Repo for intermediate statistics 10-705 @ CMU, fall 2012.
+The folder 2012Fall is the original cheat sheet and study sheet created by willieneis. All my cheat sheet are created based on his version. 
