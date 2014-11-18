@@ -1,0 +1,156 @@
+\documentclass[10pt,twocolumn]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=0.2in]{geometry}
+\usepackage[compact]{titlesec}
+\titlespacing{\section}{0pt}{2ex}{1ex}
+\titlespacing{\subsection}{0pt}{1.5ex}{1ex}
+\titlespacing{\subsubsection}{0pt}{0.5ex}{0ex}
+\usepackage{amsmath,amsthm,amssymb,MnSymbol}
+\setlength{\parindent}{0in}
+\renewenvironment{proof}{{\bfseries Proof}}{\\}
+\newcommand{\newlinetab}[0]{$\text{ }\hspace{3mm}$}
+
+%------------------------------------------------------
+% Intermediate Statistics 705 Studysheet for Final Test 
+%------------------------------------------------------
+
+\begin{document}
+
+\subsection*{Hypothesis Testing}
+\textbf{Null hypothesis} $H_{0}: \theta \in \Theta_{0}$, \textbf{alternative} $H_{1}: \theta \in \Theta_{1}$.\\
+\textbf{Type I error}: If $H_{0}$ true but we reject $H_{0}$.\\
+To construct a test:
+\begin{equation}
+    \begin{split}
+        &1. \text{ Choose a test statistic } W = W(X_{1},\ldots,X_{n})\\
+        &2. \text{ Choose a rejection region } R\\
+        &3. \text{ If } W\in R, \text{ reject } H_{0} \text{ otherwise retain } H_{0}
+    \end{split}
+\end{equation}
+The \textbf{power function} $\beta(\theta) = \mathbb{P}_{\theta}(W \in R)$ for a rejection region $R$.\\
+Want \textbf{level-$\mathbf{\alpha}$} test ($\sup_{\theta \in \Theta_{0}} \beta(\theta) \leq \alpha$) that maximizes $\beta(\theta\in\Theta_{1})$.\\
+A level-$\alpha$ test with power fn $\beta$ is \textbf{uniformly most powerful} if:
+    \newlinetab$\beta(\theta) \geq \beta'(\theta)$ $\forall \theta \in \Theta_{1}$ $\forall \beta'\neq\beta$.
+
+\subsubsection*{Neyman-Pearson Test}
+For simple $H_{0}: \theta=\theta_{0}$ and $H_{1}: \theta=\theta_{1}$, reject $H_{0}$ if $\frac{L(\theta_{1})}{L(\theta_{0})} > k$.
+    \newlinetab where $k$ chosen s.t. $\mathbb{P}(\frac{L(\theta_{1})}{L(\theta_{0})} > k) = \alpha$.
+
+\subsubsection*{Wald Test}
+For $H_{0}: \theta=\theta_{0}$ and $H_{1}: \theta\neq\theta_{0}$, reject $H_{0}$ if $\left| \frac{\hat{\theta}_{n} - \theta_{0}}{se(\hat{\theta}_{n})} \right| > z_{\alpha/2}$.\\
+    \newlinetab where $z_{\alpha/2}$ is the inverse standard-normal CDF of $1-\frac{\alpha}{2}$. \\%, ie $\Phi^{-1}(1-\alpha/2)$
+    \newlinetab and $\hat{\theta}_{n}$ an estimator s.t. $(\hat{\theta}-\theta)/\text{se} \rightsquigarrow \mathcal{N}(0,1)$ \hspace{2mm} eg: $\theta = \hat{\theta}_{\text{mle}}$\\
+    \newlinetab and $se = \sqrt{\text{Var}(\hat{\theta}_{n})}$. Can also use (for eg.) $\hat{se} = \sqrt{S_{n}^{2}/n}$.\\
+    \newlinetab and if $\hat{\theta}_{n}$ efficient, can approx: $se \approx \sqrt{\frac{1}{I_{n}(\theta)}}$ or $\hat{se} \approx \sqrt{\frac{1}{I_{n}(\hat{\theta}_{n})}}$.
+
+\subsubsection*{Likelihood Ratio Test}
+For $H_{0}: \theta\in\Theta_{0}$ and $H_{1}: \theta\notin\Theta_{0}$, reject $H_{0}$ if $\lambda(x^{n}) = \frac{L(\hat{\theta}_{0})}{L(\hat{\theta})} \leq c$.
+    \newlinetab where $L(\hat{\theta}_{0}) = \sup_{\theta\in\Theta_{0}}L(\theta)$ and $L(\hat{\theta}) = \sup_{\theta\in\Theta}L(\theta)$.\\
+    \newlinetab and $c$ chosen s.t. $\mathbb{P}(\lambda(x^{n}) \leq c) = \alpha$.\\
+    \newlinetab \textbf{Thm:} under $H_{0} : \theta=\theta_{0}$ $\implies$ $W_{n} = -2\text{log}\lambda(X^{n}) \rightsquigarrow \chi_{1}^{2}$\\
+    \newlinetab\newlinetab $\implies$ reject $H_{0}$ if $W_{n}>\chi_{1,\alpha}^{2}$.\\ %\lim_{n\rightarrow\infty} \mathbb{P}_{\theta_{0}}(W_{n} > \chi_{1,\alpha}^{2}) = \alpha$.\\
+        \newlinetab\newlinetab Also: for $\theta=(\theta_{1},\ldots,\theta_{k})$, if $H_{0}$ fixes some of the parameters\\
+        \newlinetab\newlinetab $\implies$ $-2\text{log}\lambda(X^{n}) \rightsquigarrow \chi_{\nu}^{2}$, where $\nu = \text{dim}(\Theta) - \text{dim}(\Theta_{0})$.
+
+\subsubsection*{P-Values}
+The \textbf{p-value} $p(x^{n})$ is the smallest $\alpha$-level s.t. we reject $H_{0}$.\\
+\textbf{Thm:} For a test of the form: reject $H_{0}$ when $W(x^{n})>c$,\\
+    $\text{ }\hspace{1mm}$ $\implies$ $p(x^{n}) = \underset{\theta\in\Theta_{0}}{\sup} \mathbb{P}_{\theta}(W(X^{n}) \geq W(x^{n}))$
+    $=$ $\underset{\theta\in\Theta_{0}}{\sup} [1 - F(W(x^{n})|\theta)]$.\\
+\textbf{Thm:} Under $H_{0}:\theta=\theta_{0}$,\hspace{2mm}$p(x^{n}) \sim \text{Unif}(0,1)$.
+
+\subsubsection*{Permutation Test}
+$X^{n} \sim F$, $Y^{m} \sim G$, $H_{0}:F=G$, $H_{1}:F \neq G$\\
+Let $Z=(X^{n},Y^{m})$ and $L=(1,\ldots,1,2,\ldots,2)$.\\
+Let $W = g(L,Z) = |(\text{ave of 1 labeled pts}) - (\text{ave of 2 labeled pts})|$.
+Let $p = \frac{1}{N!}\sum_{\pi} \mathbb{I}\left( g(L_{\pi},Z) > g(L,Z) \right)$ $\implies$ reject $H_{0}$ when $p<\alpha$.
+
+\subsection*{Confidence Intervals}
+We want a $1-\alpha$ \textbf{confidence interval} $C_{n} = [L(X^{n}),U(X^{n})]$ s.t.\\
+    \newlinetab$\mathbb{P}_{\theta} \left( L(X^{n}) \leq \theta \leq U(X^{n}) \right)$ $\geq$ $1-\alpha$, \hspace{1mm} $\forall \theta\in\Theta$.\\
+Generally, a $1-\alpha$ \textbf{confidence set} $C_{n}$ is a random set $C_{n} \subset \Theta$ s.t.\\
+    \newlinetab $\inf_{\theta\in\Theta}\mathbb{P}_{\theta}\left( \theta \in C_{n}(X^{n}) \right) \geq 1-\alpha$.\\
+
+\subsubsection*{Using Probability Inequalities}
+Prob inequalities give (for eg.) $\mathbb{P}(|\hat{\theta}_{n} - \theta| > \epsilon) \leq g(\exp^{-f(\epsilon)}) \underset{\text{set to}}{=} \alpha$.\\
+    \newlinetab solving for $\epsilon$ gives $\epsilon = \tilde{f}(\alpha)$ $\implies$ $\mathbb{P} \left( |\hat{\theta}_{n} - \theta| > \tilde{f}(\alpha) \right) \leq \alpha$\\
+    \newlinetab $\implies C_{n} = \left( \hat{\theta}-\tilde{f}(\alpha), \hat{\theta}+\tilde{f}(\alpha) \right)$.\\
+
+\subsubsection*{Inverting a Test}
+In level-$\alpha$ tests $\mathbb{P}_{\theta_{0}}(T(x^{n}) \in R) \leq \alpha$ $\Rightarrow$ let $C_{n} = \{ \theta : T(x^{n}) \in A(\theta_{0}) \}$.
+    $\text{ }\hspace{1mm}$where $A(\theta_{0}) = \{ T(x^{n}) \notin R \hspace{1mm} | \hspace{1mm} \theta = \theta_{0} \}$ (ie the accept region if $\theta = \theta_{0}$).\\
+    For Wald: $C_{n} = \hat{\theta}_{n} \pm (z_{\alpha/2} \times se) = \hat{\theta}_{n} \pm z_{\alpha/2}\frac{\sigma}{\sqrt{n}}$.\\
+For LRT: $C_{n} = \{ \theta : \frac{L(\theta)}{L(\hat{\theta})} > c \}$ (for test where reject $H_{0}$ if $\frac{L(\hat{\theta}_{0})}{L(\hat{\theta})} \leq c$).
+
+\subsubsection*{Pivots}
+$Q(X^{n},\theta)$ a \textbf{pivot} if the distribution of $Q$ does not depend on $\theta$.\\
+Find $a$, $b$ s.t. $\mathbb{P}_{\theta}(a \leq Q(X^{n},\theta) \leq b) \geq 1-\alpha$, $\forall \theta$.\\
+\newlinetab $\implies$ $C_{n} = \{ \theta : a \leq Q(X^{n},\theta) \leq b) \geq 1-\alpha \}$.
+
+\subsubsection*{Large Sample Confidence Intervals}
+For mle $\hat{\theta}_{n}$ with $\text{se} \approx 1/\sqrt{I_{n}(\hat{\theta}_{n})}$, approx $1-\alpha$ confidence sets are:
+For Wald: $C_{n} = \hat{\theta}_{n} \pm (z_{\alpha/2} \times \text{se})$ \\
+For Wald with delta method: $C_{n} = \tau(\hat{\theta}_{n}) \pm (z_{\alpha/2} \times \text{se}(\hat{\theta}) \times |\tau'(\hat{\theta}_{n})|)$ \\
+For LRT: $C_{n} = \left\{ \theta : -2\text{log} \left( \frac{L(\theta)}{L(\hat{\theta})} \right) \leq \chi_{k,\alpha}^{2} \right\}$
+
+
+%----------------------------------
+% BEGINNING ONLY-FOR-FINAL MATERIAL 
+%----------------------------------
+
+\subsection*{Nonparametric Inference}
+The \textbf{empirical CDF} is: $\hat{F}_{n}(x) = \frac{1}{n}\sum_{i=1}^{n}I(X_{i}\leq x)$ \\
+\textbf{Thm (DKW):} $\forall \epsilon >0, \mathbb{P}(\sup_{x} |\hat{F}(x) - F(x)| > \epsilon) \leq 2e^{-2n\epsilon^{2}}$\\
+The \textbf{kernel density estimator} is: $\hat{p}_{n}(x) = \frac{1}{n} \sum_{i=1}^{n} \frac{1}{h} K \left( \frac{x-X_{i}}{h} \right)$\\
+    \newlinetab where K a symmetric zero-mean density, and bandwidth $h>0$.
+\textbf{Thm:} The risk $R = \mathbb{E}(\mathcal{L}(p,\hat{p})) = \int (\text{b}^{2}(x) + \text{Var}(x))dx = \frac{a}{n^{4/5}}$\\
+    \newlinetab for some $a$, where $\mathcal{L}(p,\hat{p}) = \int (p(x) - \hat{p}(x))^{2}dx$, and \\
+    \newlinetab $\text{b}^{2}(x) = \mathbb{E}(\hat{p}(x)) - p(x)$. And this is minimax.\\
+A \textbf{statistical functional} $T(F)$ is any function of the CDF.\\
+A \textbf{plug-in estimator} of $\theta=T(F)$ is: $\hat{\theta}_{n} = T(\hat{F}_{n})$.\\
+Often, $\hat{\theta}_{n} \approx \mathcal{N}(T(F),\hat{\text{se}}^{2})$, where $\hat{\text{se}}$ is estimate of $\sqrt{\text{Var}\left( T(\hat{F}_{n}) \right)}$.
+
+\subsubsection*{Bootstrap}
+The \textbf{bootstrap} is a nonparametric way to find standard errors\\
+    \newlinetab and confidence intervals of estimators of statistical functionals:
+\begin{equation}
+    \begin{split}
+    &1. \text{ Draw } X_{1}^{*},\ldots,X_{n}^{*} \sim \hat{F}_{n} \text{ (via } X_{i}^{*} \sim \{ X_{1},\ldots,X_{n} \} \text{ unif). }\\
+    &2. \text{ Compute } T_{n}^{*} = g(X_{1}^{*},\ldots,X_{n}^{*})\\
+    &3. \text{ Do 1. and 2. } B \text{ times to get } T_{n,1}^{*},\ldots,T_{n,B}^{*}\\
+    &4. \text{ Let } v_{\text{boot}} = \frac{1}{B} \sum_{b=1}^{B} \left( T_{n,b}^{*} - \frac{1}{B}\sum_{r=1}^{B}T_{n,r}^{*} \right)^{2}
+    \end{split}
+\end{equation}
+
+Then: $v_{\text{boot}} \xrightarrow{a.s.} \text{Var}_{\hat{F}_{n}}(T_{n})$ as $B \rightarrow \infty$ and $\hat{\text{se}}(T_{N}) = \sqrt{v_{\text{boot}}}$
+
+\subsection*{Bayesian Inference}
+Frequentists: probability is long-run frequencies. Procedures are\\
+    \newlinetab random but parameters are fixed, unknown quantities.\\
+Bayesians: probability is a measure of subjective degree of belief. \\
+    \newlinetab Everything is random, including parameters.\\
+Using Bayes Thm $\nRightarrow$ Bayesian inference.\\
+For $X_{1},\ldots,X_{n} \sim p(x|\theta)$, and prior $\pi(\theta)$, \textbf{Bayes Thm} gives:
+\begin{equation}
+    \pi(\theta|X^{n}) = \frac{p(X^{n}|\theta)\pi(\theta)}{m(X^{n})} = \frac{p(X^{n}|\theta)\pi(\theta)}{\int p(X^{n}|\theta)\pi(\theta)d\theta}
+\end{equation}
+
+\subsection*{Prediction}
+For train-data $(X_{i},Y_{i})|_{i=1,\ldots,n}$, want to predict $Y$ given a new $X$,\\
+    \newlinetab where $Y \in \{0,1\}$ (\textbf{classification}) or $Y \in \mathbb{R}$ (\textbf{regression}).\\
+For prediction rule $h(X)$,\\
+    \newlinetab \textbf{classification risk}: $R(h) = \mathbb{P}(Y \neq h(X)) = \mathbb{E}\left( I(Y \neq h(X)) \right)$ \\
+    \newlinetab \textbf{regression risk}: $R(h) = \mathbb{E}\left( \left(Y - h(X) \right)^{2} \right)$\\
+\textbf{Thm 1:} $R(h)$ minimized by $m(x) = \mathbb{E}(Y|X=x)$.\\
+The \textbf{Bayes classifier} $h_{B}(x) = I(m(x) \geq 1/2)$
+
+\subsection*{Model Selection}
+Consider models $\mathcal{M}_{1,\ldots,k}$, $\mathcal{M}_{j} = \{ p(y;\theta_{j}) : \theta_{j} \in \Theta_{j} \}$, $\hat{\theta}_{j} = \text{mle}(\mathcal{M}_{j})$\\
+\textbf{AIC}: choose $j^{*} = \text{arg}\max|_{j} \text{ AIC}(j) = 2\text{log }L_{j}(\hat{\theta}_{j}) - 2\text{ dim}(\Theta_{j})$\\
+\textbf{BIC}: choose $j^{*} = \text{arg}\max|_{j} \text{ BIC}(j) = \text{ log }L_{j}(\hat{\theta}_{j}) - \left( \frac{\text{dim}(\Theta_{j})}{2} \text{ log }n \right)$\\
+\textbf{Cross-validation}: For train-data $= Y_{1,\ldots,n}$ and test-data $=Y_{1,\ldots,n}^{*}$
+    \newlinetab choose $j^{*} = \text{arg}\max|_{j} \hspace{1pt} \hat{K}_{j} = \frac{1}{n}\sum_{i=1}^{n} \text{log }p(Y_{i}^{*}; \hat{\theta}_{j})$
+
+
+
+\end{document}
